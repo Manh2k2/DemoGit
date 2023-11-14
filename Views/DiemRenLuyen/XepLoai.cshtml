@@ -1,0 +1,106 @@
+﻿
+@{
+    ViewBag.Title = "XepLoai";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- Giao diện Danh sách xếp loại-->
+<main>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Danh sách xếp loại</h1>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <form method="POST" action="/DiemRenLuyen/XepLoai" class="register-form" id="register-form">
+                    <div class="row" style="justify-content:space-around !important">
+                        <div class="col-2">
+                            <label for="category-film"
+                                   class="col-form-label">Từ:</label>
+                            <input type="number" class="form-control" id="category-film" name="from" min="0" max="100" step="10">
+                        </div>
+                        <div class="col-2">
+                            <label for="category-film"
+                                   class="col-form-label">Đến:</label>
+                            <input type="number" class="form-control" id="category-film" name="to" min="0" max="100" step="10">
+                        </div>
+                        <div class="col-2">
+                            <label for="category-film"
+                                   class="col-form-label"></label><br />
+                            <button type="submit" class="btn btn-success" style="margin-top:10px !important">
+                                Lọc
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="card-body">
+                <table id="datatablesSimple">
+                    <thead>
+                        <tr>
+                            <th>Mã sinh viên</th>
+                            <th>Họ tên</th>
+                            <th>Lớp sinh viên</th>
+                            <th>Điểm rèn luyện</th>
+                            <th>Học kỳ</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Mã sinh viên</th>
+                            <th>Họ tên</th>
+                            <th>Lớp sinh viên</th>
+                            <th>Điểm rèn luyện</th>
+                            <th>Học kỳ</th>
+                            <th>Xếp loại</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @foreach (var item in ViewBag.List)
+                        {
+                            <tr>
+                                <td>@item.SinhVien.MaSinhVien</td>
+                                <td>@item.SinhVien.HoTen</td>
+                                <td>@item.SinhVien.LopTaiChinh.TenLop</td>
+                                <td>@item.TongDiem</td>
+                                <td>
+                                    @if (item.IdHocKy == 1)
+                                    {
+                                        <span>I</span>
+                                    }
+                                    else if (item.IdHocKy == 2)
+                                    {
+                                        <span>II</span>
+                                    }
+                                    else if (item.IdHocKy == 3)
+                                    {
+                                        <span>III</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.TongDiem < 45)
+                                    {
+                                        <span>Yếu</span>
+                                    }
+                                    else if (item.TongDiem >= 45 && item.TongDiem < 65)
+                                    {
+                                        <span>Trung bình</span>
+                                    }
+                                    else if (item.TongDiem >= 65 && item.TongDiem < 80)
+                                    {
+                                        <span>Khá</span>
+                                    }
+                                    else if (item.TongDiem >= 80)
+                                    {
+                                        <span>Giỏi</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</main>
+

@@ -1,0 +1,603 @@
+﻿
+@{
+    ViewBag.Title = "ChamDiem";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+<!-- Giao diện để học sinh đnahs giá điểm -->
+<main>
+    <form method="post" action="/SinhVien/ChamDiem">
+        <div class="container-fluid px-4">
+            @{ var cvht = (QuanLyRenLuyen.Models.CoVanHocTap)Session["CVHT"];
+                var sv = (QuanLyRenLuyen.Models.SinhVien)Session["SV"];}
+            <h1 class="mt-4">PHIẾU TỰ ĐÁNH GIÁ KẾT QUẢ RÈN LUYỆN SINH VIÊN</h1>
+            @if (ViewBag.mess != null)
+            {
+                <div class="alert alert-success">
+                    <strong>Đánh giá rèn luyện thành công</strong>
+                </div>
+            }
+
+            <div class="row">
+                <div class="col-6">
+                    <div class="mb-1">
+                        <label for="category-film"
+                               class="col-form-label">Họ tên:</label>
+                        <input type="text" class="form-control" value="@sv.HoTen" readonly name="hoten">
+                    </div>
+                    <div class="mb-1">
+                        <label for="category-film"
+                               class="col-form-label">Mã sinh viên:</label>
+                        <input type="text" class="form-control" value="@sv.MaSinhVien" readonly name="masinhvien">
+                    </div>
+                    <input type="hidden" class="form-control" value="@sv.IdSinhVien" readonly name="IdSinhVien">
+                    <div class="mb-1">
+                        <label for="category-film"
+                               class="col-form-label">Khoa:</label>
+                        <input type="text" class="form-control" value="CNTT" name="khoa" readonly id="category-film">
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-1">
+                        <label for="category-film"
+                               class="col-form-label">Ngày sinh:</label>
+                        <input type="text" value="@String.Format("{0:dd-MM-yyyy}", sv.NgaySinh)" name="ngaysinh" readonly class="form-control" id="category-film">
+                    </div>
+                    <div class="mb-1">
+                        <label for="category-film"
+                               class="col-form-label">Lớp:</label>
+                        <input type="text" value="@sv.LopTaiChinh.TenLop" readonly class="form-control" id="category-film">
+                    </div>
+                    <div class="mb-1">
+                        <label for="category-film"
+                               class="col-form-label">Học kì:</label>
+                        <select name="hocky" required class="form-select">
+                            <option value="">Chọn học kỳ</option>
+                            @foreach (var item in ViewBag.listHocKy)
+                            {
+                                <option value="@item.IdHocKy">
+                                    @item.Ten
+                                </option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                @if (ViewBag.listHocKy.Count == 0)
+                {
+                    <h4>Sinh viên đã hoàn thành đánh giá</h4>
+                }
+                else
+                {
+                    <table class="table table-bordered">
+                        <tr>
+                            <th rowspan="2">Stt</th>
+                            <th style="width:60%" rowspan="2" colspan="2">Nội dung các tiêu chí đánh giá</th>
+                            <th style="width:30%" colspan="2">Điểm rèn luyện</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                Khung
+                                Quy định
+                            </td>
+                            <td>SV tự ĐG</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight:bold">1</td>
+                            <td colspan="2" style="font-weight:bold">Đánh giá về ý thức học tập </td>
+                            <td>0 ÷ 30</td>
+                            <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>1.1</td>
+                            <td colspan="2">Đánh giá về kết quả học tập (Điểm TBC học kỳ)   </td>
+                            <td>0 ÷ 15</td>
+                            <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td style="font-weight:bold">Xếp loại lực học</td>
+                            <td style="font-weight:bold">Thang điểm</td>
+                            <td></td>
+                            <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Loại Xuất sắc</td>
+                            <td>3,60 - 4,00</td>
+                            <td>15</td>
+                            <td rowspan="5">
+                                <select name="one1" class="form-select">
+                                    <option value="0" selected>
+                                        Chọn học lực
+                                    </option>
+                                    <option value="15">
+                                        Xuất sắc
+                                    </option>
+                                    <option value="12">
+                                        Giỏi
+                                    </option>
+                                    <option value="9">
+                                        Khá
+                                    </option>
+                                    <option value="6">
+                                        Trung bình
+                                    </option>
+                                    <option value="0">
+                                        Yếu
+                                    </option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Loại Giỏi</td>
+                            <td>3,20 - 3,59</td>
+                            <td>12</td>
+
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Loại Khá</td>
+                            <td>2,50 - 3,19</td>
+                            <td>9</td>
+
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Loại Trung Bình</td>
+                            <td>2,00 - 2,49</td>
+                            <td>6</td>
+
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Loại Yếu</td>
+                            <td>Dưới 2,00</td>
+                            <td>0</td>
+
+                        </tr>
+                        <tr>
+                            <td>1.2</td>
+                            <td colspan="2">Sinh viên tham gia nghiên cứu Khoa học, dự thi Olympic  </td>
+                            <td>0 ÷ 10</td>
+                            <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td colspan="2">
+                                <p>Tham gia các CLB học thuật, các buổi hội thảo, báo cáo chuyên đề, tọa đàm, huấn luyện kỹ năng, sinh hoạt, giao lưu, trao đổi về học tập, NCKH:</p>
+                                <p> - Tham gia 1 hoạt động</p>
+                                <p> - Tham gia 2 hoạt động</p>
+                                <p> - Tham gia 3 hoạt động trở lên</p>
+
+                            </td>
+                            <td><p> </p><br /><p> </p><p></p><p>2</p><p>4</p><p>6</p></td>
+                            <td>
+                                <select required name="one2a" class="form-select">
+                                    <option value="" selected>
+                                        Chọn số hoạt động
+                                    </option>
+                                    <option value="1">
+                                        1 hoạt động
+                                    </option>
+                                    <option value="2">
+                                        2 hoạt động
+                                    </option>
+                                    <option value="3">
+                                        3 hoạt động
+                                    </option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td colspan="2">
+                                <p>Đạt giải III (hoặc giải C), khuyến khích trong nghiên cứu khoa học hoặc các cuộc thi học thuật cấp trường hoặc tương đương</p>
+                            </td>
+                            <td><p>2</p></td>
+                            <td>
+                                <select name="one2b" required class="form-select">
+                                    <option value="" selected>
+                                        Chọn
+                                    </option>
+                                    <option value="2">
+                                        Có
+                                    </option>
+                                    <option value="0">
+                                        Không
+                                    </option>
+
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td colspan="2">
+                                <p>Đạt giải I, II (hoặc giải A, B) trong nghiên cứu khoa học hoặc các cuộc thi học thuật cấp trường hoặc tương đương</p>
+                            </td>
+                            <td><p>2</p></td>
+                            <td>
+                                <select name="one2c" required class="form-select">
+                                    <option value="" selected>
+                                        Chọn
+                                    </option>
+                                    <option value="2">
+                                        Có
+                                    </option>
+                                    <option value="0">
+                                        Không
+                                    </option>
+
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>1.3</td>
+                            <td colspan="2">Sinh viên có ý thức phấn đấu vươn lên trong học tập (Điểm TBC học kỳ tăng so với học kỳ trước)</td>
+                            <td>0 ÷ 5</td>
+                            <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td colspan="2">
+                                <p> - Từ 0.2 đến 0.39</p>
+                                <p> - Từ 0.4 đến 0.59</p>
+                                <p> - Từ 0.6 đến 0.79</p>
+                                <p> - Từ 0.8 đến cận 0.99</p>
+                                <p> - Từ 1.0 trở lên</p>
+                                <p style="color:red">Ghi chú:</p>
+                                <p>
+                                    - SV có điểm TBC HK loại Giỏi và Xuất sắc được cộng 5 điểm
+                                </p>
+                                <p>
+                                    - Đối với SV mới chỉ học 1 học kỳ đầu tiên, các em được mặc định cộng 5 điểm ở mục này. Đề nghị bộ phận kỹ thuật nghiên cứu để xử lý chức năng này.
+                                </p>
+                            </td>
+                            <td><p>1</p><p>2</p><p>3</p><p>4</p><p>5</p></td>
+                            <td>
+                                <select name="one3" required class="form-select">
+                                    <option value="" selected>
+                                        Chọn điểm trung bình cộng
+                                    </option>
+                                    <option value="1">
+                                        Từ 0.2 đến 0.39
+                                    </option>
+                                    <option value="2">
+                                        Từ 0.4 đến 0.59
+                                    </option>
+                                    <option value="3">
+                                        Từ 0.6 đến 0.79
+                                    </option>
+                                    <option value="4">
+                                        Từ 0.8 đến cận 0.99
+                                    </option>
+                                    <option value="5">
+                                        Từ 1.0 trở lên
+                                    </option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight:bold">2</td>
+                            <td colspan="2" style="font-weight:bold">Đánh giá về ý thức và việc chấp hành nội quy, quy chế, quy định </td>
+                            <td>0 ÷ 25</td>
+                            <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2.1</td>
+                            <td colspan="2">Tham gia đầy đủ các buổi thảo luận nội qui, quy chế, sinh hoạt lớp, đóng góp các ý kiến phản hồi từ người học, thực hiện khảo sát sinh viên, các hoạt động do Nhà trường tổ chức và phối hợp tổ chức như: Đối thoại giữa lãnh đạo Nhà trường với HVSV, … </td>
+                            <td>5</td>
+                            <td>
+                                <select name="two1" required class="form-select">
+                                    <option value="" selected>
+                                        Chọn
+                                    </option>
+                                    <option value="5">
+                                        Có
+                                    </option>
+                                    <option value="0">
+                                        Không
+                                    </option>
+
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2.2</td>
+                            <td colspan="2">Tham gia đầy đủ các buổi định hướng, hỗ trợ hoạt động nghề nghiệp, tham gia tuần sinh hoạt công dân sinh viên giữa và cuối khóa </td>
+                            <td>5</td>
+                            <td>
+                                <select name="two2" required class="form-select">
+                                    <option value="" selected>
+                                        Chọn
+                                    </option>
+                                    <option value="5">
+                                        Có
+                                    </option>
+                                    <option value="0">
+                                        Không
+                                    </option>
+
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2.3</td>
+                            <td colspan="2">Không vi phạm các quy định, quy chế của Khoa và Nhà trường (Nếu vi phạm trừ 02 điểm)</td>
+                            <td>2</td>
+                            <td>
+                                <select name="two3" required class="form-select">
+                                    <option value="" selected>
+                                        Chọn
+                                    </option>
+                                    <option value="2">
+                                        Có
+                                    </option>
+                                    <option value="0">
+                                        Không
+                                    </option>
+
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2.4</td>
+                            <td colspan="2">Không vi phạm qui chế thi, kiểm tra  (Nếu vi phạm trừ 03 điểm) </td>
+                            <td>3</td>
+                            <td>
+                                <select name="two4" required class="form-select">
+                                    <option value="" selected>
+                                        Chọn
+                                    </option>
+                                    <option value="3">
+                                        Có
+                                    </option>
+                                    <option value="-3">
+                                        Không
+                                    </option>
+
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2.5</td>
+                            <td colspan="2">Không vi phạm Quy chế ngoại trú  (Nếu vi phạm trừ 03 điểm)</td>
+                            <td>3</td>
+                            <td>
+                                <select name="two5" required class="form-select">
+                                    <option value="" selected>
+                                        Chọn
+                                    </option>
+                                    <option value="3">
+                                        Có
+                                    </option>
+                                    <option value="-3">
+                                        Không
+                                    </option>
+
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2.6</td>
+                            <td colspan="2">
+                                <p>Tham gia BHYT</p>
+                                <p>- Có: Cộng 5 điểm</p>
+                                <p>- Không: Trừ 5 điểm</p>
+                            </td>
+                            <td>5</td>
+                            <td>
+                                <select name="two6" required class="form-select">
+                                    <option value="" selected>
+                                        Chọn
+                                    </option>
+                                    <option value="5">
+                                        Có
+                                    </option>
+                                    <option value="-5">
+                                        Không
+                                    </option>
+
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2.7</td>
+                            <td colspan="2">Chấp hành tốt qui định bảo vệ tài sản của nhà trường</td>
+                            <td>2</td>
+                            <td>
+                                <select name="two7" required class="form-select">
+                                    <option value="" selected>
+                                        Chọn
+                                    </option>
+                                    <option value="3">
+                                        Có
+                                    </option>
+                                    <option value="0">
+                                        Không
+                                    </option>
+
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight:bold">3</td>
+                            <td colspan="2" style="font-weight:bold">Đánh giá về ý thức tham gia các hoạt động chính trị, xã hội, văn hóa, văn nghệ, thể thao, phòng chống tội phạm và các tệ nạn xã hội</td>
+                            <td>0 ÷ 20</td>
+                            <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3.1</td>
+                            <td colspan="2">
+                                <p>Tích cực tham gia các  hoạt động, cuộc thi tìm hiểu pháp luật, văn hóa, văn nghệ, TDTT do Khoa, Nhà trường tổ chức :  </p>
+                                <p> - Có ý thức, hưởng ứng các cuộc thi</p>
+                                <p> - Tham gia cuộc thi và đạt giải cấp Trường</p>
+                                <p> - Tham gia cuộc thi và Đạt giải cấp Khoa</p>
+                                <p> - Tham gia tích cực, nộp bài đúng hạn, đạt yêu cầu.</p>
+
+                            </td>
+                            <td><p> </p><br /><p> </p><p>5</p><p>10</p><p>9</p><p>7</p></td>
+                            <td>
+                                <select name="three1" required class="form-select">
+                                    <option value="" selected>
+                                        Chọn
+                                    </option>
+                                    <option value="5">
+                                        Có ý thức, hưởng ứng các cuộc thi
+                                    </option>
+                                    <option value="10">
+                                        Tham gia cuộc thi và đạt giải cấp Trường
+                                    </option>
+                                    <option value="9">
+                                        Tham gia cuộc thi và Đạt giải cấp Khoa
+                                    </option>
+                                    <option value="7">
+                                        Tham gia tích cực, nộp bài đúng hạn, đạt yêu cầu.
+                                    </option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3.2</td>
+                            <td colspan="2">Tích cực tham gia các hoạt động tuyên truyền thực hiện các chủ trương, đường lối của Đảng, Nhà nước, địa phương, Nhà trường và phòng chống tệ nạn xã hội, đấu tranh phòng chống tội phạm</td>
+                            <td>10</td>
+                            <td>
+                                <select name="three2" required class="form-select">
+                                    <option value="" selected>
+                                        Chọn
+                                    </option>
+                                    <option value="10">
+                                        Có
+                                    </option>
+                                    <option value="0">
+                                        Không
+                                    </option>
+
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight:bold">4</td>
+                            <td colspan="2" style="font-weight:bold">Thực hiện tốt các quy định về phòng, chống dịch bệnh Covid-19 </td>
+                            <td>0 ÷ 15</td>
+                            <td>
+                                <select name="four" required class="form-select">
+                                    <option value="" selected>
+                                        Chọn
+                                    </option>
+                                    <option value="15">
+                                        Có
+                                    </option>
+                                    <option value="0">
+                                        Không
+                                    </option>
+
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight:bold">5</td>
+                            <td colspan="2" style="font-weight:bold">Đánh giá về ý thức và kết quả tham gia phụ trách lớp học sinh viên, các đoàn thể, tổ chức trong Nhà trường </td>
+                            <td>0 ÷ 10</td>
+                            <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td colspan="2">Tham gia đầy đủ các buổi họp và tập huấn trong học kỳ</td>
+                            <td>2</td>
+                            <td rowspan="5">
+                                <select name="five" class="form-select">
+                                    <option value="0" selected>
+                                        Chọn điểm
+                                    </option>
+                                    <option value="2">
+                                        2
+                                    </option>
+                                    <option value="4">
+                                        4
+                                    </option>
+                                    <option value="6">
+                                        6
+                                    </option>
+                                    <option value="8">
+                                        8
+                                    </option>
+                                    <option value="10">
+                                        10
+                                    </option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td colspan="2">Xây dựng và tổ chức các hoạt động, phong trào từ cấp lớp trở lên trong học kỳ</td>
+                            <td>4</td>
+
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td colspan="2">Là sinh viên tiêu biểu trong học tập và rèn luyện, được giới thiệu tham gia học Lớp nhận thức về Đảng Cộng sản Việt Nam</td>
+                            <td>6</td>
+
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td colspan="2">Là sinh viên tiêu biểu trong học tập và rèn luyện, được giới thiệu xét kết nạp vào Đảng Cộng sản Việt Nam</td>
+                            <td>8</td>
+
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td colspan="2">Được nhận Bằng khen từ cấp thành phố và tương đương trở lên vì có thành tích trong công tác Đoàn và phong trào SV trong học kỳ</td>
+                            <td>10</td>
+
+                        </tr>
+                        <tr>
+                            <td style="font-weight:bold">6</td>
+                            <td colspan="2" style="font-weight:bold">Sinh viên có thành tích đặc biệt trong học tập, rèn luyện, nghiên cứu khoa học, văn nghệ, thể thao, cứu giúp người bị nạn: Cộng 10 điểm</td>
+                            <td>10</td>
+                            <td>
+                                <select name="six" required class="form-select">
+                                    <option value="" selected>
+                                        Chọn
+                                    </option>
+                                    <option value="10">
+                                        Có
+                                    </option>
+                                    <option value="0">
+                                        Không
+                                    </option>
+
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                }
+            </div>
+            @if (ViewBag.listHocKy.Count == 0)
+            {
+
+            }
+            else
+            {
+                <button type="submit" class="btn btn-success" style="margin-top:10px !important;width:100px;align-content:inherit">
+                    Nộp
+                </button>
+            }
+
+        </div>
+    </form>
+
+</main>
+
+
