@@ -16,24 +16,24 @@ namespace QuanLyRenLuyen.Controllers
         // GET: SinhVien
         public ActionResult Index(string msg)
         {
-            var listStudent = sinhVienDao.getList();
-            ViewBag.MSG = msg;
-            ViewBag.Lop = sinhVienDao.getLop();
-            return View(listStudent);
+            var listStudent = sinhVienDao.getList();// Lấy danh sách sinh viên từ cơ sở dữ liệu
+            ViewBag.MSG = msg;// Đặt giá trị của biến msg vào ViewBag.MSG để hiển thị trên view
+            ViewBag.Lop = sinhVienDao.getLop();// Lấy danh sách các lớp từ cơ sở dữ liệu
+            return View(listStudent);// Trả về view để hiển thị danh sách sinh viên
         }
 
         public ActionResult ChamDiem(string mess)
         {
-            var sinhvien = (SinhVien)Session["sv"];
-            ViewBag.mess = mess;
-            ViewBag.listHocKy = hocKyDao.getHocKyByIdUser(sinhvien.IdSinhVien);
-            return View();
+            var sinhvien = (SinhVien)Session["sv"]; // Lấy thông tin sinh viên từ Session
+            ViewBag.mess = mess; // Đặt thông báo (nếu có) để hiển thị trên view
+            ViewBag.listHocKy = hocKyDao.getHocKyByIdUser(sinhvien.IdSinhVien);// Lấy danh sách các học kỳ của sinh viên từ cơ sở dữ liệu
+            return View();// Trả về view để hiển thị trang chấm điểm
         }
 
         [HttpPost]
         public ActionResult ChamDiem(ChamDiemModel chamDiem)
         {
-            //xử lý ghi chú mục 1.3
+            //xử lý ghi chú mục 
             ChamDiemRenLuyen obj1Three = null;
             if (chamDiem.one1.Equals(15) || chamDiem.one1.Equals(12) || chamDiem.hocky.Equals(1))
             {
