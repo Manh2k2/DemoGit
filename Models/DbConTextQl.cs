@@ -32,11 +32,14 @@ namespace QuanLyRenLuyen.Models
         {
             try
             {
+                // Gọi phương thức SaveChanges của lớp cơ sở (base) để thực hiện lưu các thay đổi vào cơ sở dữ liệu
                 return base.SaveChanges();
             }
             catch (DbEntityValidationException ex)
             {
+                // Nếu có lỗi kiểm tra hợp lệ của Entity Framework (ví dụ: kiểm tra ràng buộc dữ liệu), xử lý ngoại lệ
                 string errorMessages = string.Join("; ", ex.EntityValidationErrors.SelectMany(x => x.ValidationErrors).Select(x => x.PropertyName + ": " + x.ErrorMessage));
+                // Ném lại ngoại lệ DbEntityValidationException với thông điệp chứa các lỗi chi tiết
                 throw new DbEntityValidationException(errorMessages);
             }
         }

@@ -7,21 +7,22 @@
     {
         public override void Up()
         {
+            //Tạo bảng có tên là "ChamDiemRenLuyens" với các cột được mô tả trong dấu ngoặc nhọn.
             CreateTable(
                 "dbo.ChamDiemRenLuyens",
                 c => new
                     {
-                        IdChamDiemRenLuyen = c.Int(nullable: false, identity: true),
-                        HocKy = c.Int(nullable: false),
-                        Diem = c.Int(nullable: false),
-                        TieuChi = c.String(nullable: false),
-                        IdSinhVien = c.Int(nullable: false),
-                        TrangThai = c.Int(nullable: false),
-                    })
-                .PrimaryKey(t => t.IdChamDiemRenLuyen)
-                .ForeignKey("dbo.SinhViens", t => t.IdSinhVien)
-                .Index(t => t.IdSinhVien);
-            
+                        IdChamDiemRenLuyen = c.Int(nullable: false, identity: true),//giá trị của nó sẽ tự động tăng khi một bản ghi mới được thêm vào.
+                        HocKy = c.Int(nullable: false),//Cột HocKy là một cột kiểu số nguyên không cho phép giá trị null, đại diện cho học kỳ.
+                        Diem = c.Int(nullable: false),//Cột Diem là một cột kiểu số nguyên không cho phép giá trị null, đại diện cho điểm.
+                        TieuChi = c.String(nullable: false),//Cột TieuChi là một cột kiểu chuỗi không cho phép giá trị null, đại diện cho tiêu chí.
+                        IdSinhVien = c.Int(nullable: false),//Cột IdSinhVien là một cột kiểu số nguyên không cho phép giá trị null, đại diện cho Id của SinhVien.
+                        TrangThai = c.Int(nullable: false),//Cột TrangThai là một cột kiểu số nguyên không cho phép giá trị null, đại diện cho trạng thái.
+                })
+                .PrimaryKey(t => t.IdChamDiemRenLuyen)//Thiết lập cột IdChamDiemRenLuyen làm khóa chính cho bảng.
+                .ForeignKey("dbo.SinhViens", t => t.IdSinhVien)//Thiết lập mối quan hệ ngoại tuyến giữa cột IdSinhVien trong bảng ChamDiemRenLuyens và cột Id trong bảng SinhViens.
+                .Index(t => t.IdSinhVien);//Tạo một chỉ mục trên cột IdSinhVien, có thể giúp tối ưu hóa hiệu suất truy vấn liên quan đến cột này.
+
             CreateTable(
                 "dbo.SinhViens",
                 c => new
